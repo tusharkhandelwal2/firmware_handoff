@@ -447,6 +447,7 @@ The following entry types are currently defined:
 - single HOB block entry: tag_id = 2 (:numref:`hob_block_entry`).
 - HOB list entry: tag_id = 3 (:numref:`hob_list_entry`).
 - ACPI table aggregate entry: tag_id = 4 (:numref:`acpi_aggr_entry`).
+- TPM info entry: tag_id = 5 (:numref:`tpm_info_entry`).
 
 .. _void_entry:
 
@@ -656,6 +657,59 @@ such that the last ACPI table in this entry ends at offset
      - data_size
      - hdr_size
      - One or more ACPI tables.
+
+
+.. _tpm_evlog_entry:
+
+TPM info table entry layout (XFERLIST_TPM_INFO)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This entry type holds TPM info of the platform.
+
+.. _tab_tpm_info:
+.. list-table:: TPM info type layout
+   :widths: 2 2 2 8
+
+   * - Field
+     - Size (bytes)
+     - Offset (bytes)
+     - Description
+
+   * - tag_id
+     - 0x3
+     - 0x0
+     - The tag_id field must be set to **5**.
+
+   * - hdr_size
+     - 0x1
+     - 0x3
+     - |hdr_size_desc|
+
+   * - data_size
+     - 0x4
+     - 0x4
+     - sizeof (base_address) + sizeof (evlog_size) + sizeof (crb_base_address) + sizeof (crb_size)
+
+   * - evlog_base_address
+     - 8
+     - 8
+     - The base address of event log
+
+   * - evlog_size
+     - size of the "evlog_size" field
+     - 16
+     - Size of the event log
+
+   * - crb_base_address
+     - 8
+     - 8
+     - The base address of CRB.
+
+   * - crb_size
+     - size of the "crb_size" field
+     - 16
+     - Size of CRB. crb_size == 0 means that crb_base_address is not valid
+
 
 .. |hdr_size_desc| replace:: The size of this entry header in bytes must be set to **8**.
 .. |current_version| replace:: `0x1`
